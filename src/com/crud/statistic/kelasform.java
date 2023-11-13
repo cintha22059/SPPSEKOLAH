@@ -69,7 +69,7 @@ public class kelasform {
                     String nama_kelas = Tnamakelas.getText();
 
                     if (tambahKelas(id_kelas, nama_kelas)) {
-                        JOptionPane.showMessageDialog(tambahkelaspanel, "Registrasi ");
+                        JOptionPane.showMessageDialog(tambahkelaspanel, "Registrasi Berhasil ");
                     } else {
                         JOptionPane.showMessageDialog(tambahkelaspanel, "Registrasi gagal.", "Coba lagi", JOptionPane.ERROR_MESSAGE);
                     }
