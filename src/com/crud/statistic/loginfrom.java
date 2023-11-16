@@ -1,6 +1,7 @@
 package com.crud.statistic;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -9,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class loginfrom {
+
+
     private JTextField tusername;
     private JPasswordField tpassword;
     private JPanel loginpanel;
@@ -19,7 +22,7 @@ public class loginfrom {
     public static void main(String[] args) {
         JFrame frame = new JFrame("LOGIN");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
+        frame.setSize(800, 800);
         loginfrom loginfrom = new loginfrom();
         frame.setContentPane(loginfrom.loginpanel);
         frame.setVisible(true);
@@ -35,6 +38,7 @@ public class loginfrom {
                 user = getAuthenticateAdmin(username, password);
                 if (user != null) {
                     JOptionPane.showMessageDialog(loginpanel, "Login berhasil.");
+                    SwingUtilities.invokeLater(loginfrom::createmenuGUI);
                 } else {
                     JOptionPane.showMessageDialog(loginpanel, "Username atau Password Salah", "Coba lagi", JOptionPane.ERROR_MESSAGE);
                 }
@@ -49,6 +53,9 @@ public class loginfrom {
         });
     }
 
+    public JPanel getloginpanel(){
+        return loginpanel;
+    }
     private Admin getAuthenticateAdmin(int username, int password) {
         Admin admin = null;
 
@@ -78,6 +85,7 @@ public class loginfrom {
         return admin;
     }
 
+
     private class Admin {
         private int username;
         private int password;
@@ -94,5 +102,17 @@ public class loginfrom {
         public int getPassword() {
             return password;
         }
+    }
+    private static void createmenuGUI() {
+        DataInterface menuUI = new DataInterface();
+        JPanel menuRoot = menuUI.getmainPanel();
+
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(menuRoot);
+        frame.setPreferredSize(new Dimension(800, 800));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }

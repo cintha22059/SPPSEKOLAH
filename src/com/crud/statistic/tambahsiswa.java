@@ -1,14 +1,54 @@
 package com.crud.statistic;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class tambahsiswa {
+    private DefaultTableModel tableModel;
+    private ResultSet resultSet;
+    private PreparedStatement preparedStatement;
+
+    private void showdata() {
+        try {
+            Object[] columnTittle = {"NIS", "NAMA","jenis_kelamin","Agama","Telp Siswa","Orang Tua","Telp Ortu","Alamat"
+            ,"Id_Kelas","Golongan SPP"};
+            tableModel = new DefaultTableModel(null, columnTittle);
+            tableModel.setColumnIdentifiers(columnTittle);
+            table1.setModel(tableModel);
+
+            // Use the correct class and method for database connection
+            String url = "jdbc:mysql://localhost/dataspp";
+            String dbUser = "root";
+            String dbPass = "";
+            Connection connection = DriverManager.getConnection(url, dbUser, dbPass);
+
+            Statement statement = connection.createStatement();
+            tableModel.getDataVector().removeAllElements();
+
+            // Inisiasi result
+            resultSet = statement.executeQuery("SELECT * FROM siswa");
+            while (resultSet.next()) {
+                Object[] data = {
+                resultSet.getString("nis"),
+                resultSet.getString("nama_siswa"),
+                        resultSet.getString("jenis_kelamin"),
+                resultSet.getString("agama"),
+                resultSet.getString("telp_siswa"),
+                resultSet.getString("nama_orangtua"),
+                resultSet.getString("tlp_ortu"),
+                resultSet.getString("alamat"),
+                resultSet.getString("kelas_id"),
+                resultSet.getString("golongan_id")
+                };
+                tableModel.addRow(data);
+            }
+        } catch (SQLException err) {
+            throw new RuntimeException(err);
+        }
+    }
     private JTextField Tnamaortu;
     private JTextField Tnoortu;
     private JTextField Talamat;
@@ -22,6 +62,8 @@ public class tambahsiswa {
     private JButton SAVEButton;
     private JButton CANCELButton;
     private JPanel tambahsiswapanel;
+    private JTable table1;
+    private JButton TAMPILKANDATAButton;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("TAMBAH SISWA");
@@ -47,8 +89,10 @@ public class tambahsiswa {
                 int kelas_id = Integer.parseInt(Tkelas.getText());
                 int golongan_id = Integer.parseInt(Tgolspp.getText());
 
-                if (tambahSiswa(nis, nama_siswa, jenis_kelamin, agama, telp_siswa, nama_orangtua, telp_ortu, alamat, kelas_id, golongan_id)) {
+                if (tambahSiswa(nis, nama_siswa, jenis_kelamin, agama, telp_siswa, nama_orangtua,
+                        telp_ortu, alamat, kelas_id, golongan_id)) {
                     JOptionPane.showMessageDialog(tambahsiswapanel, "Data siswa berhasil disimpan ke database.");
+                    showdata();
                 } else {
                     JOptionPane.showMessageDialog(tambahsiswapanel, "Gagal menyimpan data siswa ke database.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -61,6 +105,15 @@ public class tambahsiswa {
                 System.exit(0);
             }
         });
+        TAMPILKANDATAButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showdata();
+            }
+        });
+    }
+    public JPanel gettambahsiswapanel(){
+        return tambahsiswapanel;
     }
 
     private boolean tambahSiswa(int nis, String nama_siswa, String jenis_kelamin, String agama, String telp_siswa, String nama_orangtua, String telp_ortu,
@@ -73,7 +126,9 @@ public class tambahsiswa {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(url, dbUser, dbPass);
-            String sql = "INSERT INTO siswa (nis, nama_siswa, jenis_kelamin, agama, telp_siswa, nama_orangtua, telp_ortu, alamat, kelas_id, golongan_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO siswa (nis, nama_siswa, jenis_kelamin, agama, telp_siswa, nama_orangtua, telp_ortu, " +
+                    "alamat, kelas_id, golongan_id) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, nis);
             preparedStatement.setString(2, nama_siswa);

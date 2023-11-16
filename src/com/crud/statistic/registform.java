@@ -1,6 +1,7 @@
 package com.crud.statistic;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -15,11 +16,12 @@ public class registform {
     private JPanel registrationPanel;
     private JButton registButton;
     private JButton cancelButton;
+    private JButton LOGINButton;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Registration");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
+        frame.setSize(800, 800);
         registform registform = new registform();
         frame.setContentPane(registform.registrationPanel);
         frame.setVisible(true);
@@ -46,8 +48,16 @@ public class registform {
                 System.exit(0);
             }
         });
+        LOGINButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.invokeLater(registform::createloginGUI);
+            }
+        });
     }
-
+    public JPanel getregistrationPanel(){
+        return registrationPanel;
+    }
     private boolean registerAdmin(int username, int password, String adminName)
     {
         String url = "jdbc:mysql://localhost/dataspp";
@@ -79,5 +89,17 @@ public class registform {
                 e.printStackTrace();
             }
         }
+    }
+    private static void createloginGUI() {
+        loginfrom loginUI = new loginfrom();
+        JPanel loginRoot = loginUI.getloginpanel();
+
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(loginRoot);
+        frame.setPreferredSize(new Dimension(800, 800));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }
