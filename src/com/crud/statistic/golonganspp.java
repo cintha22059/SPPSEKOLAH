@@ -2,6 +2,7 @@ package com.crud.statistic;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -59,11 +60,13 @@ public class golonganspp {
     private JButton UPDATEButton;
 
     private JTextField newjumlah;
+    private JButton MENUButton;
+    private JComboBox comboBox1;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("TAMBAH GOLONGAN SPP");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
+        frame.setSize(800, 800);
         golonganspp golonganspp = new golonganspp();
         frame.setContentPane(golonganspp.golonganpanel);
         frame.setVisible(true);
@@ -108,6 +111,12 @@ public class golonganspp {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateData();
+            }
+        });
+        MENUButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.invokeLater(golonganspp::createmenuGUI);
             }
         });
     }
@@ -230,5 +239,17 @@ public class golonganspp {
                 ex.printStackTrace();
             }
         }
+    }
+    private static void createmenuGUI() {
+        DataInterface menuUI = new DataInterface();
+        JPanel menuroot = menuUI.getmainPanel();
+
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(menuroot);
+        frame.setPreferredSize(new Dimension(800, 800));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }

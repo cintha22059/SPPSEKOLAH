@@ -2,6 +2,7 @@ package com.crud.statistic;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -36,7 +37,7 @@ public class tambahsiswa {
                 resultSet.getString("nama_siswa"),
                         resultSet.getString("jenis_kelamin"),
                 resultSet.getString("agama"),
-                resultSet.getString("telp_siswa"),
+                resultSet.getString("tlp_siswa"),
                 resultSet.getString("nama_orangtua"),
                 resultSet.getString("tlp_ortu"),
                 resultSet.getString("alamat"),
@@ -64,17 +65,33 @@ public class tambahsiswa {
     private JPanel tambahsiswapanel;
     private JTable table1;
     private JButton TAMPILKANDATAButton;
+    private JButton MENUButton;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("TAMBAH SISWA");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
+        frame.setSize(800, 800);
         tambahsiswa tambahsiswa = new tambahsiswa();
         frame.setContentPane(tambahsiswa.tambahsiswapanel);
         frame.setVisible(true);
     }
 
     public tambahsiswa() {
+
+
+        CANCELButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        TAMPILKANDATAButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showdata();
+            }
+        });
         SAVEButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -98,17 +115,10 @@ public class tambahsiswa {
                 }
             }
         });
-
-        CANCELButton.addActionListener(new ActionListener() {
+        MENUButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-        TAMPILKANDATAButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showdata();
+                SwingUtilities.invokeLater(kelasform::createmenuGUI);
             }
         });
     }
@@ -126,7 +136,7 @@ public class tambahsiswa {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(url, dbUser, dbPass);
-            String sql = "INSERT INTO siswa (nis, nama_siswa, jenis_kelamin, agama, telp_siswa, nama_orangtua, telp_ortu, " +
+            String sql = "INSERT INTO siswa (nis, nama_siswa, jenis_kelamin, agama, tlp_siswa, nama_orangtua, tlp_ortu, " +
                     "alamat, kelas_id, golongan_id) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -156,5 +166,18 @@ public class tambahsiswa {
                 e.printStackTrace();
             }
         }
+
+    }
+    private static void createmenuGUI() {
+        DataInterface menuUI = new DataInterface();
+        JPanel menuroot = menuUI.getmainPanel();
+
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(menuroot);
+        frame.setPreferredSize(new Dimension(800, 800));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }

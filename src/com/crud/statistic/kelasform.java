@@ -1,13 +1,12 @@
 package com.crud.statistic;
 
-import com.sun.jdi.connect.Connector;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.crypto.Data;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-import java.util.Objects;
 
 public class kelasform {
     private JPanel tambahkelaspanel;
@@ -57,6 +56,7 @@ public class kelasform {
     private JTextField newid;
     private JTextField newnamakelas;
     private JButton UPDATEButton;
+    private JButton MENUButton;
 
 
     public static void main(String[] args) {
@@ -105,6 +105,13 @@ public class kelasform {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateData();
+            }
+        });
+        MENUButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.invokeLater(kelasform::createmenuGUI);
+
             }
         });
     }
@@ -222,5 +229,18 @@ public class kelasform {
     }
     public JPanel gettambahkelaspanel(){
         return tambahkelaspanel;
+    }
+
+    static void createmenuGUI() {
+        DataInterface menuUI = new DataInterface();
+        JPanel menuroot = menuUI.getmainPanel();
+
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(menuroot);
+        frame.setPreferredSize(new Dimension(800, 800));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }

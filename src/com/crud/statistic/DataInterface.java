@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 public class DataInterface {
     private JFrame frame;
     private JPanel mainPanel;
-    private JButton REGISTButton;
     private JButton KELASButton;
     private JButton SISWAButton;
     private JButton TRANSAKSIButton;
@@ -23,15 +22,6 @@ public class DataInterface {
         frame.setVisible(true);
     }
     public DataInterface() {
-
-
-        // Mengatur tombol REGISTButton
-        REGISTButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(DataInterface::createregistGUI);
-            }
-        });
 
         // Mengatur tombol KELASButton
         KELASButton.addActionListener(new ActionListener() {
@@ -67,6 +57,7 @@ public class DataInterface {
     public JPanel getmainPanel(){
         return mainPanel;
     }
+
     private static void createregistGUI() {
         registform registUI = new registform();
         JPanel registRoot = registUI.getregistrationPanel();
@@ -129,5 +120,4 @@ public class DataInterface {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-
 }

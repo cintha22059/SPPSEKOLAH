@@ -17,6 +17,7 @@ public class loginfrom {
     private JPanel loginpanel;
     private JButton CANCELButton;
     private JButton OKButton;
+    private JButton REGISTRATIONButton;
     private Admin user;
 
     public static void main(String[] args) {
@@ -49,6 +50,12 @@ public class loginfrom {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
+            }
+        });
+        REGISTRATIONButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.invokeLater(loginfrom::createregistGUI);
             }
         });
     }
@@ -110,6 +117,18 @@ public class loginfrom {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(menuRoot);
+        frame.setPreferredSize(new Dimension(800, 800));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+    private static void createregistGUI() {
+        registform registUI = new registform();
+        JPanel registroot = registUI.getregistrationPanel();
+
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(registroot);
         frame.setPreferredSize(new Dimension(800, 800));
         frame.pack();
         frame.setLocationRelativeTo(null);

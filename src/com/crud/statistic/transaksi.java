@@ -2,6 +2,8 @@ package com.crud.statistic;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -19,6 +21,9 @@ public class transaksi {
             tableModel = new DefaultTableModel(null, columnTitles);
             tableModel.setColumnIdentifiers(columnTitles);
             table1.setModel(tableModel);
+
+            // Set the table header
+            table1.setTableHeader(new JTableHeader(table1.getColumnModel()));
 
             String url = "jdbc:mysql://localhost/dataspp";
             String dbUser = "root";
@@ -49,7 +54,9 @@ public class transaksi {
         } catch (SQLException err) {
             throw new RuntimeException(err);
         }
+
     }
+
 
     private JButton SAVEButton;
     private JButton TAMPILKANDATAButton;
@@ -71,6 +78,8 @@ public class transaksi {
 
     private JTable table1;
     private JTextField n_admin;
+    private JButton MENUButton;
+
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("TRANSAKSI");
@@ -127,6 +136,12 @@ public class transaksi {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
+            }
+        });
+        MENUButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.invokeLater(transaksi::createmenuGUI);
             }
         });
     }
@@ -209,4 +224,17 @@ public class transaksi {
             }
         }
     }
+    private static void createmenuGUI() {
+        DataInterface menuUI = new DataInterface();
+        JPanel menuroot = menuUI.getmainPanel();
+
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(menuroot);
+        frame.setPreferredSize(new Dimension(800, 800));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
 }
+
